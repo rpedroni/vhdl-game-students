@@ -36,7 +36,23 @@ architecture arch of whackAMole is
 
   signal position: natural range 0 to GAME_TABLE_SIZE - 1;
 
+  signal hit: std_logic;
+  signal miss: std_logic;
+
 begin
+
+  controlScore: process(all)
+  begin
+    if rising_edge(clk) then
+      -- Esperando jogo começar
+      if gameState = Waiting then
+        score <= 0;
+      -- Jogando
+      elsif gameState = Playing and hit = '1' then
+        score <= score + 1;
+      end if;
+    end if;
+  end process;
 
   -- TODO: Do something for real 👍🏼
   generatePosition: process(all)
