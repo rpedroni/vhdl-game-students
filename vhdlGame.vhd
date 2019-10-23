@@ -25,6 +25,8 @@ architecture arch of whackAMole is
   constant COUNT_LIMIT: integer := FCLK;
   constant GAME_TABLE_SIZE: natural := 8;
 
+  signal whack: std_logic;
+
   -- Game state
   type GameState is (Waiting, Playing, Defeat, Victory);
   signal gameState: GameState;
@@ -40,6 +42,40 @@ architecture arch of whackAMole is
   signal miss: std_logic;
 
 begin
+
+
+  -- whackButton
+  -- 1. Debounceado
+  -- 2. Criado um pulso
+  -- Vira o "whack"
+  -- Processe o whack
+
+  hitDetection: process(all)
+    variable prevPosition: natural range 0 to GAME_TABLE_SIZE - 1;
+  begin
+    if rising_edge(clk) then
+
+      hit <= '0';
+      miss <= '0';
+      
+      -- Acertar/errar apertando o botão
+      if whack = '1' then
+        if target = position  then
+          hit <= '1';
+        else
+          miss <= '1';
+        end if;
+      end if;
+
+      -- Errar com o limite do tempo
+      if prevPosition = target and position /= target then
+        miss <= '1';
+      end if;
+      prevPosition := position;
+
+    end if;
+
+  end process;
 
   controlScore: process(all)
   begin
