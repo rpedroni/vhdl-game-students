@@ -23,13 +23,29 @@ architecture arch of whackAMole is
   
   -- TODO: Atualmente estamos considerando 1 segundo
   constant COUNT_LIMIT: integer := FCLK;
+  constant GAME_TABLE_SIZE: natural := 8;
+
+  -- Game state
+  type GameState is (Waiting, Playing, Defeat, Victory);
+  signal gameState: GameState;
 
   -- Controla a pontuação
   signal score: natural range 0 to MAX_POINTS;
   -- Define a velcidade..
   signal speedClock: std_logic;
 
+  signal position: natural range 0 to GAME_TABLE_SIZE - 1;
+
 begin
+
+  -- TODO: Do something for real 👍🏼
+  generatePosition: process(all)
+  begin
+    if rising_edge(speedClock) then
+      -- TODO: user gameState
+      position <= 3;
+    end if;
+  end process;
 
   -- Block SPEED CONTROL
   -- Controla a velocidade de geração das posições aleatórias
