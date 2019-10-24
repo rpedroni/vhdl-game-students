@@ -43,6 +43,11 @@ architecture arch of whackAMole is
 
 begin
 
+    -- VIEWS
+    targetView <= SSD_EMPTY when gameState = Waiting else
+                  SSD_ONE when target = 1 else
+                  SSD_TWO;
+                  -- ... vocês se viram com resto
 
   -- whackButton
   -- 1. Debounceado
